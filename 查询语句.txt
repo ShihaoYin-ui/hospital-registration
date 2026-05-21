@@ -1,0 +1,156 @@
+-- 用户表
+CREATE TABLE user (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_number CHAR(18) UNIQUE,
+    name VARCHAR(30),
+    gender CHAR(1),
+    birth_date DATE,
+    phone VARCHAR(20),
+    native_place VARCHAR(50),
+    address VARCHAR(200),
+    email VARCHAR(50) UNIQUE,
+    password VARCHAR(255),
+    status TINYINT(1)
+);
+
+-- 科室类型表
+CREATE TABLE type (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    code VARCHAR(20) UNIQUE,
+    name VARCHAR(50),
+    parent_id INT,
+    sort_order INT,
+    status TINYINT(1)
+);
+
+-- 科室表
+CREATE TABLE department (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    code VARCHAR(20),
+    name VARCHAR(50),
+    type_id INT,
+    level INT,
+    intro VARCHAR(2000),
+    leader_id INT,
+    phone VARCHAR(20),
+    location VARCHAR(200),
+    sort_order INT,
+    status TINYINT(1),
+    FOREIGN KEY (type_id) REFERENCES type(id)
+);
+
+-- 医生表
+CREATE TABLE doctor (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    code VARCHAR(20),
+    name VARCHAR(20),
+    gender CHAR(1),
+    birth_date DATE,
+    dept_id INT,
+    title INT,
+    level TINYINT,
+    specialty VARCHAR(255),
+    practice_year INT,
+    pol_status VARCHAR(20),
+    education VARCHAR(50),
+    resume VARCHAR(2000),
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    sort_order INT,
+    status TINYINT(1),
+    FOREIGN KEY (dept_id) REFERENCES department(id)
+);
+
+-- 就诊人表
+CREATE TABLE patient (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    name VARCHAR(20),
+    gender CHAR(1),
+    id_number CHAR(18),
+    phone VARCHAR(20),
+    relationship VARCHAR(20),
+    is_default CHAR(1),
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
+-- 固定排班表
+CREATE TABLE fixed_schedule (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    dept_id INT,
+    doctor_id INT,
+    time_slot VARCHAR(11),
+    period CHAR(2),
+    week_day INT,
+    total_quota INT,
+    fee DECIMAL(8,2),
+    FOREIGN KEY (dept_id) REFERENCES department(id),
+    FOREIGN KEY (doctor_id) REFERENCES doctor(id)
+);
+
+-- 动态排班表
+CREATE TABLE dynamic_schedule (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    schedule_id INT,
+    doctor_id INT,
+    schedule_date DATE,
+    time_slot VARCHAR(11),
+    period CHAR(2),
+    total_quota INT,
+    remaining_quota INT,
+    status INT,
+    FOREIGN KEY (schedule_id) REFERENCES fixed_schedule(id),
+    FOREIGN KEY (doctor_id) REFERENCES doctor(id)
+);
+
+-- 预约记录表
+CREATE TABLE appointment (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    patient_id INT,
+    dept_id INT,
+    doctor_id INT,
+    schedule_id INT,
+    type INT,
+    appointment_time DATETIME,
+    fee DECIMAL(8,2),
+    status INT,
+    cancel_time DATETIME,
+    checkin_time DATETIME,
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (patient_id) REFERENCES patient(id),
+    FOREIGN KEY (dept_id) REFERENCES department(id),
+    FOREIGN KEY (doctor_id) REFERENCES doctor(id),
+    FOREIGN KEY (schedule_id) REFERENCES dynamic_schedule(id)
+);
+
+-- 就诊记录表
+CREATE TABLE visit_record (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    appointment_id INT,
+    patient_id INT,
+    doctor_id INT,
+    visit_date DATETIME,
+    diagnosis TEXT,
+    prescription TEXT,
+    remarks VARCHAR(500),
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (appointment_id) REFERENCES appointment(id),
+    FOREIGN KEY (patient_id) REFERENCES patient(id),
+    FOREIGN KEY (doctor_id) REFERENCES doctor(id)
+);
+
+-- 费用配置表
+CREATE TABLE fee_config (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    dept_id INT,
+    doctor_title INT,
+    type INT,
+    fee DECIMAL(8,2),
+    effective_date DATE,
+    expire_date DATE,
+    is_active INT,
+    FOREIGN KEY (dept_id) REFERENCES department(id)
+);
