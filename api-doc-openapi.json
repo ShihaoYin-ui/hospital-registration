@@ -1,0 +1,542 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "云医院挂号系统 API",
+    "description": "云医院挂号系统后端接口文档 — 用户/就诊人/科室/医生/排班/预约/就诊记录",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "本地开发环境"
+    }
+  ],
+  "paths": {
+    "/api/user/login": {
+      "post": {
+        "tags": ["用户模块"],
+        "summary": "用户登录",
+        "parameters": [
+          { "name": "phone", "in": "query", "required": true, "schema": { "type": "string" }, "description": "手机号", "example": "13800001001" },
+          { "name": "password", "in": "query", "required": true, "schema": { "type": "string" }, "description": "密码", "example": "123456" }
+        ],
+        "responses": {
+          "200": { "description": "登录成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_LoginData" } } } }
+        }
+      }
+    },
+    "/api/user/register": {
+      "post": {
+        "tags": ["用户模块"],
+        "summary": "用户注册",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/User" } } }
+        },
+        "responses": {
+          "200": { "description": "注册成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_User" } } } }
+        }
+      }
+    },
+    "/api/user/password": {
+      "put": {
+        "tags": ["用户模块"],
+        "summary": "修改密码",
+        "parameters": [
+          { "name": "userId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "用户ID" },
+          { "name": "oldPwd", "in": "query", "required": true, "schema": { "type": "string" }, "description": "原密码" },
+          { "name": "newPwd", "in": "query", "required": true, "schema": { "type": "string" }, "description": "新密码" }
+        ],
+        "responses": {
+          "200": { "description": "修改成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_Void" } } } }
+        }
+      }
+    },
+    "/api/user/info": {
+      "get": {
+        "tags": ["用户模块"],
+        "summary": "获取用户信息",
+        "parameters": [
+          { "name": "userId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "用户ID" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_User" } } } }
+        }
+      }
+    },
+    "/api/patient/list": {
+      "get": {
+        "tags": ["就诊人模块"],
+        "summary": "查询就诊人列表",
+        "parameters": [
+          { "name": "userId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "用户ID" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_PatientList" } } } }
+        }
+      }
+    },
+    "/api/patient/default": {
+      "get": {
+        "tags": ["就诊人模块"],
+        "summary": "获取默认就诊人",
+        "parameters": [
+          { "name": "userId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "用户ID" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_Patient" } } } }
+        }
+      }
+    },
+    "/api/patient/add": {
+      "post": {
+        "tags": ["就诊人模块"],
+        "summary": "添加就诊人",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Patient" } } }
+        },
+        "responses": {
+          "200": { "description": "添加成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_Void" } } } }
+        }
+      }
+    },
+    "/api/patient/update": {
+      "put": {
+        "tags": ["就诊人模块"],
+        "summary": "更新就诊人信息",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Patient" } } }
+        },
+        "responses": {
+          "200": { "description": "更新成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_Void" } } } }
+        }
+      }
+    },
+    "/api/patient/delete": {
+      "delete": {
+        "tags": ["就诊人模块"],
+        "summary": "删除就诊人",
+        "parameters": [
+          { "name": "id", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "就诊人ID" },
+          { "name": "userId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "用户ID" }
+        ],
+        "responses": {
+          "200": { "description": "删除成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_Void" } } } }
+        }
+      }
+    },
+    "/api/patient/setDefault": {
+      "put": {
+        "tags": ["就诊人模块"],
+        "summary": "设置默认就诊人",
+        "parameters": [
+          { "name": "id", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "就诊人ID" },
+          { "name": "userId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "用户ID" }
+        ],
+        "responses": {
+          "200": { "description": "设置成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_Void" } } } }
+        }
+      }
+    },
+    "/api/type/root": {
+      "get": {
+        "tags": ["科室类型模块"],
+        "summary": "获取根科室类型",
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_TypeList" } } } }
+        }
+      }
+    },
+    "/api/type/children": {
+      "get": {
+        "tags": ["科室类型模块"],
+        "summary": "获取子科室类型",
+        "parameters": [
+          { "name": "parentId", "in": "query", "required": true, "schema": { "type": "integer" }, "description": "父类型ID" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_TypeList" } } } }
+        }
+      }
+    },
+    "/api/department/listByType": {
+      "get": {
+        "tags": ["科室模块"],
+        "summary": "按类型查询科室列表",
+        "parameters": [
+          { "name": "type", "in": "query", "required": true, "schema": { "type": "integer" }, "description": "科室类型ID" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_DepartmentList" } } } }
+        }
+      }
+    },
+    "/api/department/allActive": {
+      "get": {
+        "tags": ["科室模块"],
+        "summary": "查询所有启用科室",
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_DepartmentList" } } } }
+        }
+      }
+    },
+    "/api/department/detail": {
+      "get": {
+        "tags": ["科室模块"],
+        "summary": "获取科室详情",
+        "parameters": [
+          { "name": "id", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "科室ID" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_Department" } } } }
+        }
+      }
+    },
+    "/api/doctor/listByDept": {
+      "get": {
+        "tags": ["医生模块"],
+        "summary": "按科室查询医生列表",
+        "parameters": [
+          { "name": "deptId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "科室ID" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_DoctorList" } } } }
+        }
+      }
+    },
+    "/api/doctor/search": {
+      "get": {
+        "tags": ["医生模块"],
+        "summary": "搜索医生",
+        "parameters": [
+          { "name": "keyword", "in": "query", "required": true, "schema": { "type": "string" }, "description": "搜索关键词（医生姓名）" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_DoctorList" } } } }
+        }
+      }
+    },
+    "/api/doctor/detail": {
+      "get": {
+        "tags": ["医生模块"],
+        "summary": "获取医生详情",
+        "parameters": [
+          { "name": "id", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "医生ID" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_Doctor" } } } }
+        }
+      }
+    },
+    "/api/schedule/available": {
+      "get": {
+        "tags": ["排班模块"],
+        "summary": "查询医生可用号源",
+        "parameters": [
+          { "name": "doctorId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "医生ID" },
+          { "name": "date", "in": "query", "required": true, "schema": { "type": "string", "format": "date" }, "description": "日期 yyyy-MM-dd", "example": "2026-05-24" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_DynamicScheduleList" } } } }
+        }
+      }
+    },
+    "/api/schedule/range": {
+      "get": {
+        "tags": ["排班模块"],
+        "summary": "查询医生日期范围内的排班",
+        "parameters": [
+          { "name": "doctorId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "医生ID" },
+          { "name": "startDate", "in": "query", "required": true, "schema": { "type": "string", "format": "date" }, "description": "开始日期 yyyy-MM-dd", "example": "2026-05-24" },
+          { "name": "endDate", "in": "query", "required": true, "schema": { "type": "string", "format": "date" }, "description": "结束日期 yyyy-MM-dd", "example": "2026-05-30" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_DynamicScheduleList" } } } }
+        }
+      }
+    },
+    "/api/appointment/reserve": {
+      "post": {
+        "tags": ["预约模块"],
+        "summary": "预约挂号",
+        "parameters": [
+          { "name": "userId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "用户ID" },
+          { "name": "patientId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "就诊人ID" },
+          { "name": "scheduleId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "排班ID" }
+        ],
+        "responses": {
+          "200": { "description": "预约成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_Appointment" } } } }
+        }
+      }
+    },
+    "/api/appointment/cancel": {
+      "put": {
+        "tags": ["预约模块"],
+        "summary": "取消预约",
+        "parameters": [
+          { "name": "appointmentId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "预约ID" }
+        ],
+        "responses": {
+          "200": { "description": "取消成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_Void" } } } }
+        }
+      }
+    },
+    "/api/appointment/checkin": {
+      "put": {
+        "tags": ["预约模块"],
+        "summary": "签到",
+        "parameters": [
+          { "name": "appointmentId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "预约ID" }
+        ],
+        "responses": {
+          "200": { "description": "签到成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_Void" } } } }
+        }
+      }
+    },
+    "/api/appointment/user": {
+      "get": {
+        "tags": ["预约模块"],
+        "summary": "查询用户的所有预约",
+        "parameters": [
+          { "name": "userId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "用户ID" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_AppointmentList" } } } }
+        }
+      }
+    },
+    "/api/appointment/patient": {
+      "get": {
+        "tags": ["预约模块"],
+        "summary": "查询就诊人的所有预约",
+        "parameters": [
+          { "name": "patientId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "就诊人ID" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_AppointmentList" } } } }
+        }
+      }
+    },
+    "/api/appointment/detail": {
+      "get": {
+        "tags": ["预约模块"],
+        "summary": "获取预约详情",
+        "parameters": [
+          { "name": "id", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "预约ID" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_Appointment" } } } }
+        }
+      }
+    },
+    "/api/visit/byAppointment": {
+      "get": {
+        "tags": ["就诊记录模块"],
+        "summary": "按预约查询就诊记录",
+        "parameters": [
+          { "name": "appointmentId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "预约ID" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_VisitRecord" } } } }
+        }
+      }
+    },
+    "/api/visit/byPatient": {
+      "get": {
+        "tags": ["就诊记录模块"],
+        "summary": "按就诊人查询就诊记录",
+        "parameters": [
+          { "name": "patientId", "in": "query", "required": true, "schema": { "type": "integer", "format": "int64" }, "description": "就诊人ID" }
+        ],
+        "responses": {
+          "200": { "description": "查询成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Result_VisitRecordList" } } } }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Result_LoginData": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "example": 200 },
+          "message": { "type": "string", "example": "success" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer", "format": "int64" },
+              "name": { "type": "string" },
+              "phone": { "type": "string" }
+            }
+          }
+        }
+      },
+      "Result_Void": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "example": 200 },
+          "message": { "type": "string", "example": "success" },
+          "data": { "nullable": true }
+        }
+      },
+      "Result_User": { "$ref": "#/components/schemas/Result_T", "description": "data 为 User 对象" },
+      "Result_Patient": { "$ref": "#/components/schemas/Result_T", "description": "data 为 Patient 对象" },
+      "Result_PatientList": { "$ref": "#/components/schemas/Result_T", "description": "data 为 Patient[] 数组" },
+      "Result_TypeList": { "$ref": "#/components/schemas/Result_T", "description": "data 为 Type[] 数组" },
+      "Result_Department": { "$ref": "#/components/schemas/Result_T", "description": "data 为 Department 对象" },
+      "Result_DepartmentList": { "$ref": "#/components/schemas/Result_T", "description": "data 为 Department[] 数组" },
+      "Result_Doctor": { "$ref": "#/components/schemas/Result_T", "description": "data 为 Doctor 对象" },
+      "Result_DoctorList": { "$ref": "#/components/schemas/Result_T", "description": "data 为 Doctor[] 数组" },
+      "Result_DynamicScheduleList": { "$ref": "#/components/schemas/Result_T", "description": "data 为 DynamicSchedule[] 数组" },
+      "Result_Appointment": { "$ref": "#/components/schemas/Result_T", "description": "data 为 Appointment 对象" },
+      "Result_AppointmentList": { "$ref": "#/components/schemas/Result_T", "description": "data 为 Appointment[] 数组" },
+      "Result_VisitRecord": { "$ref": "#/components/schemas/Result_T", "description": "data 为 VisitRecord 对象" },
+      "Result_VisitRecordList": { "$ref": "#/components/schemas/Result_T", "description": "data 为 VisitRecord[] 数组" },
+      "Result_T": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "example": 200 },
+          "message": { "type": "string", "example": "success" },
+          "data": {}
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "idNumber": { "type": "string", "description": "身份证号" },
+          "name": { "type": "string", "description": "姓名" },
+          "gender": { "type": "string", "description": "性别 M/F" },
+          "birthDate": { "type": "string", "format": "date", "description": "出生日期" },
+          "phone": { "type": "string", "description": "手机号" },
+          "nativePlace": { "type": "string", "description": "籍贯" },
+          "address": { "type": "string", "description": "地址" },
+          "email": { "type": "string", "description": "邮箱" },
+          "password": { "type": "string", "description": "密码" },
+          "status": { "type": "integer", "description": "状态" }
+        }
+      },
+      "Patient": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "userId": { "type": "integer", "format": "int64", "description": "所属用户ID" },
+          "name": { "type": "string", "description": "姓名" },
+          "gender": { "type": "string", "description": "性别 M/F" },
+          "idNumber": { "type": "string", "description": "身份证号" },
+          "phone": { "type": "string", "description": "手机号" },
+          "relationship": { "type": "string", "description": "与用户关系" },
+          "isDefault": { "type": "string", "description": "是否默认 Y/N" },
+          "createTime": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Type": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "code": { "type": "string", "description": "类型编码" },
+          "name": { "type": "string", "description": "类型名称" },
+          "parentId": { "type": "integer", "description": "父类型ID" },
+          "sortOrder": { "type": "integer" },
+          "status": { "type": "integer" }
+        }
+      },
+      "Department": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "code": { "type": "string", "description": "科室编码" },
+          "name": { "type": "string", "description": "科室名称" },
+          "type": { "type": "integer", "description": "科室类型ID" },
+          "level": { "type": "integer", "description": "级别" },
+          "intro": { "type": "string", "description": "科室介绍" },
+          "leaderId": { "type": "integer", "format": "int64", "description": "负责人ID" },
+          "phone": { "type": "string", "description": "联系电话" },
+          "location": { "type": "string", "description": "位置" },
+          "sortOrder": { "type": "integer" },
+          "status": { "type": "integer" }
+        }
+      },
+      "Doctor": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "code": { "type": "string", "description": "医生工号" },
+          "name": { "type": "string", "description": "姓名" },
+          "gender": { "type": "string", "description": "性别" },
+          "birthDate": { "type": "string", "format": "date" },
+          "deptId": { "type": "integer", "format": "int64", "description": "所属科室ID" },
+          "title": { "type": "integer", "description": "职称" },
+          "level": { "type": "integer", "description": "级别" },
+          "specialty": { "type": "string", "description": "擅长领域" },
+          "practiceYear": { "type": "integer", "description": "从业年限" },
+          "polStatus": { "type": "string", "description": "政治面貌" },
+          "education": { "type": "string", "description": "学历" },
+          "resume": { "type": "string", "description": "简历" },
+          "phone": { "type": "string" },
+          "email": { "type": "string" },
+          "sortOrder": { "type": "integer" },
+          "status": { "type": "integer" }
+        }
+      },
+      "DynamicSchedule": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "scheduleId": { "type": "integer", "format": "int64", "description": "固定排班ID" },
+          "doctorId": { "type": "integer", "format": "int64", "description": "医生ID" },
+          "scheduleDate": { "type": "string", "format": "date", "description": "排班日期" },
+          "timeSlot": { "type": "string", "description": "时间段" },
+          "period": { "type": "string", "description": "时段（上午/下午/晚上）" },
+          "totalQuota": { "type": "integer", "description": "总号源数" },
+          "remainingQuota": { "type": "integer", "description": "剩余号源数" },
+          "status": { "type": "integer", "description": "状态" }
+        }
+      },
+      "Appointment": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "userId": { "type": "integer", "format": "int64" },
+          "patientId": { "type": "integer", "format": "int64" },
+          "deptId": { "type": "integer", "format": "int64" },
+          "doctorId": { "type": "integer", "format": "int64" },
+          "scheduleId": { "type": "integer", "format": "int64" },
+          "type": { "type": "integer", "format": "int64", "description": "挂号类型" },
+          "appointmentTime": { "type": "string", "format": "date-time", "description": "预约时间" },
+          "fee": { "type": "number", "description": "挂号费用" },
+          "status": { "type": "integer", "description": "状态" },
+          "cancelTime": { "type": "string", "format": "date-time" },
+          "checkinTime": { "type": "string", "format": "date-time" },
+          "createTime": { "type": "string", "format": "date-time" }
+        }
+      },
+      "VisitRecord": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "appointmentId": { "type": "integer", "format": "int64", "description": "预约ID" },
+          "patientId": { "type": "integer", "format": "int64", "description": "就诊人ID" },
+          "doctorId": { "type": "integer", "format": "int64", "description": "医生ID" },
+          "visitDate": { "type": "string", "format": "date-time", "description": "就诊日期" },
+          "diagnosis": { "type": "string", "description": "诊断结果" },
+          "prescription": { "type": "string", "description": "处方" },
+          "remarks": { "type": "string", "description": "备注" },
+          "createTime": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  },
+  "tags": [
+    { "name": "用户模块", "description": "登录/注册/改密/用户信息" },
+    { "name": "就诊人模块", "description": "就诊人 CRUD / 设置默认" },
+    { "name": "科室类型模块", "description": "科室类型树" },
+    { "name": "科室模块", "description": "科室列表/详情" },
+    { "name": "医生模块", "description": "医生列表/搜索/详情" },
+    { "name": "排班模块", "description": "号源查询" },
+    { "name": "预约模块", "description": "预约/取消/签到/查询" },
+    { "name": "就诊记录模块", "description": "就诊记录查询" }
+  ]
+}
