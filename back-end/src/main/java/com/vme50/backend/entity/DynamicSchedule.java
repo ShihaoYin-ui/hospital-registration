@@ -1,5 +1,6 @@
 package com.vme50.backend.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,19 +13,25 @@ import java.util.Date;
 public class DynamicSchedule {
     private Long id;
 
-    private Long schedule_id;
+    @TableField("schedule_id")
+    private Long scheduleId;
 
-    private Long doctor_id;
+    @TableField("doctor_id")
+    private Long doctorId;
 
-    private Date schedule_date;
+    @TableField("schedule_date")
+    private Date scheduleDate;
 
-    private String time_slot;
+    @TableField("time_slot")
+    private String timeSlot;
 
     private String period;
 
-    private Integer total_quota;
+    @TableField("total_quota")
+    private Integer totalQuota;
 
-    private Integer remaining_quota;
+    @TableField("remaining_quota")
+    private Integer remainingQuota;
 
     private Integer status;
 

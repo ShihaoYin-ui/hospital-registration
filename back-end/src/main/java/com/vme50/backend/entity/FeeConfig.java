@@ -1,5 +1,6 @@
 package com.vme50.backend.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,18 +14,19 @@ import java.util.Date;
 public class FeeConfig {
     private Long id;
 
-    private Long dept_id;
+    @TableField("dept_id")
+    private Long deptId;
 
-    private Integer doctor_title;
-
+    private Integer doctorTitle;
     private Integer type;
-
     private BigDecimal fee;
 
-    private Date effective_date;
+    @TableField("effective_date")
+    private Date effectiveDate;
 
-    private Date expire_date;
+    @TableField("expire_date")
+    private Date expireDate;
 
-    private Integer is_active;
-
+    @TableField("is_active")
+    private Integer isActive;
 }
