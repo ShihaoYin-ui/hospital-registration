@@ -30,14 +30,14 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
     @Transactional
     public Appointment reserve(Long userId, Long patientId, Long scheduleId) {
         Patient patient = patientMapper.selectById(patientId);
-        if (patient == null || !patient.getUser_id().equals(userId)) {
+        if (patient == null || !patient.getUserId().equals(userId)) {
             throw new RuntimeException("就诊人信息错误");
         }
         DynamicSchedule ds = dynamicScheduleMapper.lockById(scheduleId);
-        if (ds == null || ds.getRemaining_quota() <= 0 || ds.getStatus() != 1) {
+        if (ds == null || ds.getRemainingQuota() <= 0 || ds.getStatus() != 1) {
             throw new RuntimeException("号源已满或已停诊");
         }
-        FixedSchedule fs = fixedScheduleMapper.selectById(ds.getSchedule_id());
+        FixedSchedule fs = fixedScheduleMapper.selectById(ds.getScheduleId());
         if (fs == null) {
             throw new RuntimeException("排班模板不存在");
         }
@@ -48,14 +48,14 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
         Appointment app = new Appointment();
         app.setUserId(userId);
         app.setPatientId(patientId);
-        app.setDept_id(fs.getDept_id());
-        app.setDoctor_id(ds.getDoctor_id());
-        app.setSchedule_id(scheduleId);
+        app.setDeptId(fs.getDeptId());
+        app.setDoctorId(ds.getDoctorId());
+        app.setScheduleId(scheduleId);
         app.setType(1L);
-        app.setAppointment_time(new Date());
+        app.setAppointmentTime(new Date());
         app.setFee(fs.getFee());
         app.setStatus(1);
-        app.setCreate_time(new Date());
+        app.setCreateTime(new Date());
         this.save(app);
         return app;
     }
@@ -67,7 +67,7 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
         if (app == null || app.getStatus() != 1) {
             throw new RuntimeException("预约记录不存在或不可取消");
         }
-        dynamicScheduleMapper.increaseQuota(app.getSchedule_id());
+        dynamicScheduleMapper.increaseQuota(app.getScheduleId());
         return baseMapper.cancelById(appointmentId, new Date()) > 0;
     }
 

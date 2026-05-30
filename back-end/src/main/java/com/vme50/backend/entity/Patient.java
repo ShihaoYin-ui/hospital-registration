@@ -1,5 +1,6 @@
 package com.vme50.backend.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,20 +13,24 @@ import java.util.Date;
 public class Patient {
     private Long id;
 
-    private Long user_id;
+    @TableField("user_id")
+    private Long userId;
 
     private String name;
 
     private Character gender;
 
-    private String id_number;
+    @TableField("id_number")
+    private String idNumber;
 
     private String phone;
 
     private String relationship;
 
-    private Character is_default;
+    @TableField("is_default")
+    private Character isDefault;
 
-    private Date create_time;
+    @TableField("create_time")
+    private Date createTime;
 
 }

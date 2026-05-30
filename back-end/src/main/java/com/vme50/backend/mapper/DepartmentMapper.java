@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface DepartmentMapper extends BaseMapper<Department> {
 
-    @Select("SELECT * FROM department WHERE type = #{type} AND status = 1 ORDER BY sort_order")
+    @Select("SELECT * FROM department WHERE type_id = #{type} AND status = 1 ORDER BY sort_order")
     List<Department> findByType(@Param("type") Integer type);
 
     @Select("SELECT * FROM department WHERE status = 1 ORDER BY sort_order")

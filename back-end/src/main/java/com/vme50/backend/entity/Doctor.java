@@ -1,5 +1,6 @@
 package com.vme50.backend.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,37 +12,33 @@ import java.util.Date;
 @NoArgsConstructor
 public class Doctor {
     private Long id;
-
     private String code;
-
     private String name;
-
     private Character gender;
 
-    private Date birth_date;
+    @TableField("birth_date")
+    private Date birthDate;
 
-    private Long dept_id;
+    @TableField("dept_id")
+    private Long deptId;
 
-    private Integer tittle;
-
+    private Integer title;
     private Short level;
+    private String specialty;
 
-    private String speciality;
+    @TableField("practice_years")
+    private Integer practiceYears;
 
-    private Integer practice_years;
-
-    private String pol_status;
+    @TableField("pol_status")
+    private String polStatus;
 
     private String education;
-
     private String resume;
-
     private String phone;
-
     private String email;
 
-    private Integer sort_order;
+    @TableField("sort_order")
+    private Integer sortOrder;
 
     private Short status;
-
 }

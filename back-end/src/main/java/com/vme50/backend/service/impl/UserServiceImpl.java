@@ -25,10 +25,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (this.findByPhone(user.getPhone()) != null) {
             throw new RuntimeException("手机号已注册");
         }
-        if (user.getId_number() != null && baseMapper.findByIdNumber(user.getId_number()) != null) {
+        if (user.getIdNumber() != null && baseMapper.findByIdNumber(user.getIdNumber()) != null) {
             throw new RuntimeException("身份证号已被注册");
         }
-        if (user.getEmail() != null && baseMapper.findByEmail(user.getEmail()) != null) {
+        if (user.getEmail() != null && !user.getEmail().isEmpty() && baseMapper.findByEmail(user.getEmail()) != null) {
             throw new RuntimeException("邮箱已被注册");
         }
         user.setPassword(encryptPassword(user.getPassword()));

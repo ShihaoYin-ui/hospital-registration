@@ -13,6 +13,10 @@ struct PatientList {
     this.loadPatients();
   }
 
+  onPageShow() {
+    this.loadPatients();
+  }
+
   build() {
     Column() {
       Text('就诊人管理')

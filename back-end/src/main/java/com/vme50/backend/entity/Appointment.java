@@ -1,5 +1,6 @@
 package com.vme50.backend.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,24 +18,31 @@ public class Appointment {
 
     private Long patientId;
 
-    private Long dept_id;
+    @TableField("dept_id")
+    private Long deptId;
 
-    private Long doctor_id;
+    @TableField("doctor_id")
+    private Long doctorId;
 
-    private Long schedule_id;
+    @TableField("schedule_id")
+    private Long scheduleId;
 
     private Long type;
 
-    private Date appointment_time;
+    @TableField("appointment_time")
+    private Date appointmentTime;
 
     private BigDecimal fee;
 
     private Integer status;
 
-    private Date cancel_time;
+    @TableField("cancel_time")
+    private Date cancelTime;
 
-    private Date checkin_time;
+    @TableField("checkin_time")
+    private Date checkinTime;
 
-    private Date create_time;
+    @TableField("create_time")
+    private Date createTime;
 
 }

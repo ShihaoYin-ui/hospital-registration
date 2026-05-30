@@ -1,5 +1,6 @@
 package com.vme50.backend.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,15 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Type {
     private Integer id;
-
     private String code;
-
     private String name;
 
-    private Integer parent_id;
+    @TableField("parent_id")
+    private Integer parentId;
 
-    private Integer sort_order;
+    @TableField("sort_order")
+    private Integer sortOrder;
 
     private Short status;
-
 }

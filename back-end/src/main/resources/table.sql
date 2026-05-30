@@ -1,5 +1,5 @@
 -- 用户表
-CREATE TABLE user (
+CREATE TABLE IF NOT EXISTS user (
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_number CHAR(18) UNIQUE,
     name VARCHAR(30),
@@ -14,7 +14,7 @@ CREATE TABLE user (
 );
 
 -- 科室类型表
-CREATE TABLE type (
+CREATE TABLE IF NOT EXISTS type (
     id INT PRIMARY KEY AUTO_INCREMENT,
     code VARCHAR(20) UNIQUE,
     name VARCHAR(50),
@@ -24,7 +24,7 @@ CREATE TABLE type (
 );
 
 -- 科室表
-CREATE TABLE department (
+CREATE TABLE IF NOT EXISTS department (
     id INT PRIMARY KEY AUTO_INCREMENT,
     code VARCHAR(20),
     name VARCHAR(50),
@@ -40,7 +40,7 @@ CREATE TABLE department (
 );
 
 -- 医生表
-CREATE TABLE doctor (
+CREATE TABLE IF NOT EXISTS doctor (
     id INT PRIMARY KEY AUTO_INCREMENT,
     code VARCHAR(20),
     name VARCHAR(20),
@@ -62,7 +62,7 @@ CREATE TABLE doctor (
 );
 
 -- 就诊人表
-CREATE TABLE patient (
+CREATE TABLE IF NOT EXISTS patient (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
     name VARCHAR(20),
@@ -76,12 +76,12 @@ CREATE TABLE patient (
 );
 
 -- 固定排班表
-CREATE TABLE fixed_schedule (
+CREATE TABLE IF NOT EXISTS fixed_schedule (
     id INT PRIMARY KEY AUTO_INCREMENT,
     dept_id INT,
     doctor_id INT,
     time_slot VARCHAR(11),
-    period CHAR(2),
+    `period` CHAR(2),
     week_day INT,
     total_quota INT,
     fee DECIMAL(8,2),
@@ -90,13 +90,13 @@ CREATE TABLE fixed_schedule (
 );
 
 -- 动态排班表
-CREATE TABLE dynamic_schedule (
+CREATE TABLE IF NOT EXISTS dynamic_schedule (
     id INT PRIMARY KEY AUTO_INCREMENT,
     schedule_id INT,
     doctor_id INT,
     schedule_date DATE,
     time_slot VARCHAR(11),
-    period CHAR(2),
+    `period` CHAR(2),
     total_quota INT,
     remaining_quota INT,
     status INT,
@@ -105,7 +105,7 @@ CREATE TABLE dynamic_schedule (
 );
 
 -- 预约记录表
-CREATE TABLE appointment (
+CREATE TABLE IF NOT EXISTS appointment (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
     patient_id INT,
@@ -127,7 +127,7 @@ CREATE TABLE appointment (
 );
 
 -- 就诊记录表
-CREATE TABLE visit_record (
+CREATE TABLE IF NOT EXISTS visit_record (
     id INT PRIMARY KEY AUTO_INCREMENT,
     appointment_id INT,
     patient_id INT,
@@ -143,7 +143,7 @@ CREATE TABLE visit_record (
 );
 
 -- 费用配置表
-CREATE TABLE fee_config (
+CREATE TABLE IF NOT EXISTS fee_config (
     id INT PRIMARY KEY AUTO_INCREMENT,
     dept_id INT,
     doctor_title INT,
