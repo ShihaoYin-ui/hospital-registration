@@ -19,7 +19,6 @@ DELETE FROM user;
 USE hospital_db;
 SET FOREIGN_KEY_CHECKS = 0;
 
-
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- ==================== 1. 用户 (20条) ====================
@@ -840,7 +839,6 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 -- ==================== 医生排班补充 5/30-6/1 ====================
 -- 20医生 × 3天 × 2时段(上/下午) = 120条
-
 
 INSERT INTO dynamic_schedule (schedule_id, doctor_id, schedule_date, time_slot, period, total_quota, remaining_quota, status) VALUES
 -- 医1 陈博文
