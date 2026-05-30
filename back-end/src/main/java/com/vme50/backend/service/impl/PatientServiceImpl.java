@@ -24,10 +24,10 @@ public class PatientServiceImpl extends ServiceImpl<PatientMapper, Patient> impl
     @Override
     @Transactional
     public boolean addPatient(Patient patient) {
-        if (this.listByUserId(patient.getUser_id()).isEmpty()) {
-            patient.setIs_default('Y');
+        if (this.listByUserId(patient.getUserId()).isEmpty()) {
+            patient.setIsDefault('Y');
         } else {
-            patient.setIs_default('N');
+            patient.setIsDefault('N');
         }
         return this.save(patient);
     }
@@ -42,10 +42,10 @@ public class PatientServiceImpl extends ServiceImpl<PatientMapper, Patient> impl
     @Transactional
     public boolean deletePatient(Long id, Long userId) {
         Patient patient = this.getById(id);
-        if (patient == null || !patient.getUser_id().equals(userId)) {
+        if (patient == null || !patient.getUserId().equals(userId)) {
             return false;
         }
-        boolean isDefault = patient.getIs_default() == 'Y';
+        boolean isDefault = patient.getIsDefault() == 'Y';
         boolean removed = this.removeById(id);
         if (removed && isDefault) {
             List<Patient> remaining = this.listByUserId(userId);

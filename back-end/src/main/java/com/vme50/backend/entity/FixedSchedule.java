@@ -1,5 +1,6 @@
 package com.vme50.backend.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,17 +13,22 @@ import java.math.BigDecimal;
 public class FixedSchedule {
     private Long id;
 
-    private Long dept_id;
+    @TableField("dept_id")
+    private Long deptId;
 
-    private Long doctor_id;
+    @TableField("doctor_id")
+    private Long doctorId;
 
-    private String time_slot;
+    @TableField("time_slot")
+    private String timeSlot;
 
     private String period;
 
-    private Integer week_day;
+    @TableField("week_day")
+    private Integer weekDay;
 
-    private Integer total_quota;
+    @TableField("total_quota")
+    private Integer totalQuota;
 
     private BigDecimal fee;
 
