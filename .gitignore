@@ -1,2 +1,30 @@
 # 项目排除路径
 /back-end/target/
+
+# IDE
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Archives
+*.zip
+
+# Claude Code
+.claude/
+
+# 非项目文件夹
+/Pura 90/
+/Pura 90.ini
+/lists.json
+/phone_config.json
+/privacy.json
+/versionInfo.txt
+/2026-05-24前后端联调/
+/2026-5-10 实训第一天/
+/ArkTS UI开发/
+/Git使用/
+/teacher/
+/repoteacher/

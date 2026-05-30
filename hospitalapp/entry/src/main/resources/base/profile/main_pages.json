@@ -1,0 +1,13 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/Home",
+    "pages/Register",
+    "pages/PatientList",
+    "pages/PatientEdit",
+    "pages/DepartmentList",
+    "pages/DoctorList",
+    "pages/DoctorDetail",
+    "pages/AppointmentList"
+  ]
+}
